@@ -1,3 +1,5 @@
+// Package ast declares the types used to represent syntax trees for Djinni IDL files.
+//
 package ast
 
 import (

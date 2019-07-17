@@ -1,3 +1,5 @@
+// Package token defines constants representing the lexical tokens of the Djinni IDL
+//
 package token
 
 import "strconv"
