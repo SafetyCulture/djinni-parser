@@ -133,7 +133,7 @@ type (
 
 	// Record reperesents a pure-data value object.
 	Record struct {
-		Ext    Ext // The extensions supported
+		Ext    Ext // The extra extensions
 		Fields []Field
 		Consts []Const
 	}
@@ -144,11 +144,15 @@ type (
 		Methods []Method
 		Consts  []Const
 	}
+
+	// BadDef reperesents a bad type definition
+	BadDef struct{}
 )
 
 func (*Enum) typeDefNode()      {}
 func (*Record) typeDefNode()    {}
 func (*Interface) typeDefNode() {}
+func (*BadDef) typeDefNode()    {}
 
 // ----------------------------------------------------------------------------
 // Declarations
@@ -159,8 +163,6 @@ type TypeDecl struct {
 	Ident Ident         // name of the identifier
 	Body  TypeDef       // decleration type
 }
-
-func (*TypeDecl) declNode() {}
 
 // ----------------------------------------------------------------------------
 // Files

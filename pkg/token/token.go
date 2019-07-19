@@ -15,15 +15,12 @@ const (
 	EOF
 	COMMENT
 
-	literal_beg
 	// Identifiers and basic type literals
 	IDENT  // my_record
 	INT    // 12345
 	FLOAT  // 123.45
 	STRING // "abc"
-	literal_end
 
-	operator_beg
 	ASSIGN // =
 
 	LPAREN // (
@@ -36,10 +33,9 @@ const (
 	COMMA     // ,
 	SEMICOLON // ;
 	COLON     // :
-	operator_end
 
 	keyword_beg
-	// Keywords
+	// Type Keywords
 	ENUM
 	FLAGS
 	RECORD
@@ -59,12 +55,12 @@ const (
 	IMPORT
 	keyword_end
 
-	langflag_beg
 	// Language extension flags
+	ext_beg
 	CPP
 	OBJC
 	JAVA
-	langflag_end
+	ext_end
 )
 
 var tokens = [...]string{
@@ -147,18 +143,19 @@ func Lookup(ident string) Token {
 	return IDENT
 }
 
-// IsLiteral returns true for tokens corresponding to identifiers
-// and basic type literals; it returns false otherwise.
-func (tok Token) IsLiteral() bool { return literal_beg < tok && tok < literal_end }
-
-// IsOperator returns true for tokens corresponding to operators and
-// delimiters; it returns false otherwise.
-func (tok Token) IsOperator() bool { return operator_beg < tok && tok < operator_end }
-
-// IsKeyword returns true for tokens corresponding to keywords;
+// IsTypeDef returns true for tokens corresponding to type defs;
 // it returns false otherwise.
-func (tok Token) IsKeyword() bool { return keyword_beg < tok && tok < keyword_end }
+func (tok Token) IsTypeDef() bool { return ENUM <= tok && tok <= INTERFACE }
 
-// IsLangFlag returns true for tokens corresponding to language flag;
+// TypeDefTokens gets the top level type defs
+func TypeDefTokens() []Token {
+	var defs []Token
+	for i := ENUM; i <= INTERFACE; i++ {
+		defs = append(defs, i)
+	}
+	return defs
+}
+
+// IsLangExt returns true for tokens that are language extesions;
 // it returns false otherwise.
-func (tok Token) IsLangFlag() bool { return langflag_beg < tok && tok < langflag_end }
+func (tok Token) IsLangExt() bool { return ext_beg < tok && tok < ext_end }
