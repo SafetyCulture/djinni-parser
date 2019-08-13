@@ -1,0 +1,17 @@
+# .buildkite/pipeline.yml
+
+steps:
+  - name: ":golang: Coverage"
+    command:
+      - "curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter"
+      - "chmod +x ./cc-test-reporter"
+      - "go test -coverprofile c.out ./..."
+      - "./cc-test-reporter after-build --prefix $(go list -m)"
+    plugins:
+      - docker#v3.3.0:
+          image: "golang:1.12"
+          propagate-environment: true
+    env:
+      CC_TEST_REPORTER_ID: "e7792d8a948e4486587e68be5c531755e9e164050f78eb33ba91714688f562eb"
+    agents:
+      type: aws-buildkite-agent
