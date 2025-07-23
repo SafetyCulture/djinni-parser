@@ -1,3 +1,11 @@
 # .buildkite/pipeline.yml
 
-go test ./...
+steps:
+  - name: ":golang: Coverage"
+    command:
+      - "go test -coverprofile c.out ./..."
+    plugins:
+      - docker#v3.3.0:
+          image: "golang:1.12"
+    agents:
+      type: aws-buildkite-agent
