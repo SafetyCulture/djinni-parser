@@ -1,1 +1,3 @@
 # .buildkite/pipeline.yml
+
+go test ./...
